@@ -1,101 +1,72 @@
-# 다람쥐 버스 분석 및 노선 신설 방안 제시
+![daram_thumbnail](./img/daram_thumb.png)
 
-- ### 프로젝트 조: Multicampus Final project 3조
-- ### 프로젝트 기간: 2023.06.20~2023.07.31
-- ### 프로젝트 구성원 : 양충모, 김은비, 김지연, 서정식
-- ### 프로젝트 지원: 멀티캠퍼스
+
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white">  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+<img src="https://img.shields.io/badge/Apache Spark-E25A1C?style=for-the-badge&logo=Apache Spark&logoColor=white">  <img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white"> <img src="https://img.shields.io/badge/Numpy-013243?style=for-the-badge&logo=numpy&logoColor=white"> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon ec2&logoColor=white"> <img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white"> <img src="https://img.shields.io/badge/Folium-77B829?style=for-the-badge&logo=Folium&logoColor=white"> <img src="https://img.shields.io/badge/Apache parquet-50ABF1?style=for-the-badge&logo=apache parquet&logoColor=white"> 
+<img src="https://img.shields.io/badge/scikit learn-F7931E?style=for-the-badge&logo=scikit learn&logoColor=white">
+
+## 📂 프로젝트 개요
+**[프로젝트명]** 다람쥐 버스의 신설 노선 제시
+
+**[기간]** 2023.06.20 - 2023.07.31
+
+**[팀 구성원]**
+- 프로젝트 조: Multicampus Final project 3조
+- 프로젝트 구성원 : 양충모, 김은비, 김지연, 서정식   
+  
+**[프로젝트 배경]** 
+- 기존 다람쥐 버스 도입 후 혼잡 빈도 35% 감소, 평균 이용자수 264% 급증
+- 다람쥐 버스 노선의 신설에 대한 긍정적인 여론 (신설 찬성: 95.8%)
+
+**[설명]**
+
+- 다람쥐 버스는 출근 시간대(7-9시)에 승객이 많이 몰리는 특정 구간을 반복 운행하는 출근 맞춤형 버스입니다.
+- 해당 프로젝트는 현재 운행 중인 다람쥐 버스의 특을 분석하고, 다람쥐 버스의 새로운 노선을 정하는 프로젝트 입니다. 프로젝트는 크게 두가지 목표를 지니고 있습니다.
+    1. 새로운 지역을 선정
+    2. 새로운 지역 내에서 운행될 신설 노선의 경로를 설정
+   ![img](./img/daram_img2.png)   
+  
 <br>
 
-## 프로젝트 설명
+**[진행 과정]**
+![Alt text](./img/daram_process.png)
+<br> 
 
-> <center>현재 운행 중인 <u>다람쥐 버스</u>의 특성을 분석하여,</center>   
-> <center>다람쥐 버스가 필요한 "새로운 지역을 선정"하고 "신설 노선의 경로를 설정"하는 프로젝트 입니다.</center>
+## 🎁 프로젝트를 통해 얻은 것, 느낀점
+- 대용량 데이터 (약 10억건의 기후 데이터)를 다뤄볼 수 있는 좋은 기회였음
 
-- 다람쥐 버스란?
+- SQL과 Spark SQL을 통해 대용량 데이터를 조회, 정제하는 경험을 함
 
-  - 출근시간에 특정구간을 반복 운행하는 버스
-  - 버스의 승객 수송량을 보조해주고 교통체증을 완화해주기 위한 서비스  
-    <br>
+- 직접 DB를 구축해보면서 Data Lake, Warehouse 설계의 중요성을 느낌
 
-- 프로젝트 배경 : 하기의 이유들로 기존 지역 이외에도 다람쥐 버스의 새로운 노선 신설 필요
-  - 출근 시간대 대중교통 혼잡도 감소 필요
-  - 기존 다람쥐 버스 도입 후 높은 수요 & 도입 효과를 낳음
-  - 다람쥐 버스 노선의 신설에 대한 긍정적인 여론
+- 해당 프로젝트에서 사람이 직접 개입하여 분석해야하는 단계가 불가피하다는특성때문에 파이프라인을 구축하진 못했지만 파이프라인이 업무의 속도와 편리함을 증진시킨다는 것을 절실히 느꼈고, 추후 프로젝트를 진행할 때는 파이프라인 구축을 염두에 두고 진행할 것
 
- <br>
-
-## 프로젝트 흐름도
-
-![Alt text](./src/Data/img/최종흐름도.png)
-
-1. 분석에 필요한 데이터 수집.
-2. EDA 1차 목표: 다람쥐 버스를 신설할 지역 선정
-3. EDA 2차 목표:
-   - 선정된 지역에서 다람쥐 버스를 운행할 노선 경로 선정
-   - 신설 노선의 배차 수, 배차 간경 설정
-4. 회귀분석으로 기후의 변화에 따라 선정된 노선의 정류장 별 승하차 승객 수 예측
-   <br>
-
-<!-- - 데이터 수집
-  다람쥐 버스 정류장의 시간별 승하차 승객수를 수집한다.
-- 기존 다람쥐 버스 분석
-  기존 다람쥐 버스 정류장의 인프라 특징이 어떤지 분석한다.
-- 다람쥐 버스 신설 지역 선정
-  분석한 내용을 토대로 다람쥐 버스가 필요한 지역을 선정한다.
-- 다람쥐 버스 노선 경로 설정
-  분석한 내용을 토대로 다람쥐 버스의 경로를 설정한다.
-- 다람쥐 버스 배차 수와 배차 간격 설정
-  다람쥐 버스가 효율적으로 운행할 수 있도록 배차 수와 배차 간격을 설정한다.   -->
-
-<!-- ## 데이터 출처
-- 공공데이터
-- 통계청
-- KAKAO API  -->
-
-## Environment
-
-- python, jupyter notebook, aws, hadoop, spark, zeppelin, git, mysql
-  <br>
-
-## Git Hub Commit
-
-```
-- feat: 새로운 기능에 대한 커밋
-- fix: 수정에 대한 커밋
-- chore: 그 외 자잘한 수정에 대한 커밋(기타 변경)
-- docs: 문서 수정에 대한 커밋
-- style: 코드 스타일 혹은 포맷 등에 관한 커밋
-- refactor: 코드 리팩토링에 대한 커밋
-```
+- EDA과정에서 여러 시행착오를 겪으며 다양한 알고리즘과 툴을 접할 수 있어서 좋았음
 
 <br>
 
-## 모듈 & 노트북 설명
+## 🗒️모듈 & 노트북 설명
 
-#### Data
+### [Data](./src/Data/)
 
-- [Extract.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/fa563f0241962d8eb74a49d7627080da30d6bca3/src/Data/Extract.py): 데이터 수집
-- [preprocessing.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/fa563f0241962d8eb74a49d7627080da30d6bca3/src/Data/preprocessing.py): 수집된 통계, 인프라, 버스 데이터를 전처리하여 1차 분석에 필요한 데이터 프레임 반환
-- [bus_preprocessing.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/fa563f0241962d8eb74a49d7627080da30d6bca3/src/Data/bus_preprocessing.py) : 공공데이터에서 수집한 버스 데이터 전처리
-- [preprocessing_regression.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/fa563f0241962d8eb74a49d7627080da30d6bca3/src/Data/preprocessing_regression.py): 회귀 데이터의 전처리
+- [Extract.py](./src/Data/Extract.py): 데이터 수집
+- [preprocessing.py](./src/Data/preprocessing.py): 수집된 통계, 인프라, 버스 데이터를 전처리하여 1차 분석에 필요한 데이터 프레임 반환
+- [bus_preprocessing.py](./src/Data/bus_preprocessing.py) : 공공데이터에서 수집한 버스 데이터 전처리
+- [preprocessing_regression.py](./src/Data/preprocessing_regression.py): 회귀 데이터의 전처리
 
-#### EDA
+### [EDA](./src/EDA/)
+- [EDA_STEP_1.py](./src/02_EDA1.ipynb): 기-종점 거리 구하기
+- [folium.py](./src/EDA/folium.py): 폴리엄
+- [visualization.py](./src/EDA/visualization.py): EDA 그래프 시각화
+  
 
-- [EDA_STEP_1.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/EDA/EDA_STEP_1.py): 기-종점 거리 구하기
-- [folium.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/EDA/folium.py): 폴리엄
-- [visualization.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/EDA/visualization.py): EDA 그래프 시각화
-- [zeppelin.ipynb]()
+### [Modeling](./src/Modeling/)
+- [similarity.py](./src/Modeling/similarity.py): EDA 1차에 사용된 유사도 알고리즘(유클리디안, 코사인)
+- [clustering.py](./src/Modeling/clustering.py): EDA 1차에 사용된 군집 알고리즘(KMeans, GMM, DBSCAN)
+- [regression.py](./src/Modeling/regression.py): 회귀 알고리즘(XGBoost, Random Forest)
 
-#### Modeling
-
-- [similarity.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/Modeling/similarity.py): EDA 1차에 사용된 유사도 알고리즘(유클리디안, 코사인)
-- [clustering.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/Modeling/clustering.py): EDA 1차에 사용된 군집 알고리즘(KMeans, GMM, DBSCAN)
-- [regression.py](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/4fd26975cc1d171144e10818462ceb6fee42f912/src/Modeling/regression.py): 회귀 알고리즘(XGBoost, Random Forest)
-
-#### [01_preprocessing.ipynb](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/7d9773f29868a925b71645c0db4d7f18a7de4477/src/01_preprocessing.ipynb) : 데이터 전처리 과정
-
-#### [02_EDA1.ipynb](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/7d9773f29868a925b71645c0db4d7f18a7de4477/src/02_EDA1.ipynb) : 다람쥐 버스 신설 지역 선정 과정
-
-#### [03\_*EDA2*기존경유지분석.ipynb](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/7d9773f29868a925b71645c0db4d7f18a7de4477/src/03_EDA2_%EA%B8%B0%EC%A1%B4%EA%B2%BD%EC%9C%A0%EC%A7%80%EB%B6%84%EC%84%9D.ipynb) : 노선 경로 선정 과정
-
-#### [04_regression.ipynb](https://github.com/Mulcam-Finalproject3/Resurrection_Of_Squirrel_Bus/blob/7d9773f29868a925b71645c0db4d7f18a7de4477/src/04_regression.ipynb) : 기후에 따른 승차 인원 수 예측
+### Notebook
+- [01_preprocessing.ipynb](./src/01_preprocessing.ipynb) : 데이터 전처리 과정
+- [02_EDA1.ipynb](./src/02_EDA1.ipynb) : 다람쥐 버스 신설 지역 선정 과정
+- [03\_*EDA2*기존경유지분석.ipynb](./src/03_EDA2_기존경유지분석.ipynb) : 노선 경로 선정 과정
+- [04_regression.ipynb](./src/04_regression.ipynb) : 기후에 따른 승차 인원 수 예측
